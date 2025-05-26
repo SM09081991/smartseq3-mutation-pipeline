@@ -1,17 +1,17 @@
-# 🧬 Smart-seq3 Mutation Analysis Pipeline (BAM -> VCF)
+# Smart-seq3 Mutation Analysis Pipeline (BAM -> VCF)
 
 This pipeline guides you through analyzing **mutational status of specific genes** (e.g., *Braf*, *Trp53*) from **Smart-seq3 BAM files** using **GATK (in bash)** and **R** for interpretation.
 
 ---
 
-## 📁 1. Input Requirements
+##  1. Input Requirements
 - Smart-seq3 aligned BAM file (`.bam`) and its index (`.bai`)
 - Reference genome: Ensembl **GRCm38 (no chr prefix)**
 - Gene annotation: optional for visualization
 
 ---
 
-## ⚙️ 2. Environment Setup (WSL/Linux)
+##  2. Environment Setup (WSL/Linux)
 ```bash
 # Install required tools
 sudo apt update && sudo apt install -y samtools unzip openjdk-17-jre wget
@@ -25,7 +25,7 @@ sudo ln -s ~/gatk-4.5.0.0/gatk /usr/local/bin/gatk
 
 ---
 
-## 🧬 3. Prepare Reference Files
+##  3. Prepare Reference Files
 ```bash
 # Create reference directory
 mkdir -p ~/gatk_ref && cd ~/gatk_ref
@@ -44,7 +44,7 @@ gatk CreateSequenceDictionary \
 
 ---
 
-## 🔍 4. Filter BAM for Gene Regions of Interest
+##  4. Filter BAM for Gene Regions of Interest
 ```bash
 # Example: Braf (chr6:37497000-37507000), Trp53 (chr11:69566000-69586000)
 samtools view -b input.bam \
@@ -56,7 +56,7 @@ samtools index braf_tp53.bam
 
 ---
 
-## 🧼 5. Preprocess BAM for GATK
+##  5. Preprocess BAM for GATK
 ```bash
 # Split spliced reads
 gatk SplitNCigarReads \
@@ -75,7 +75,7 @@ samtools index braf_tp53.rg.bam
 
 ---
 
-## 🔬 6. Call Variants with GATK
+##  6. Call Variants with GATK
 ```bash
 gatk HaplotypeCaller \
   -R Mus_musculus.GRCm38.dna.primary_assembly.fa \
@@ -89,7 +89,7 @@ gatk HaplotypeCaller \
 
 ---
 
-## 📊 7. Analyze Variants in R
+##  7. Analyze Variants in R
 ```r
 library(VariantAnnotation)
 
@@ -108,7 +108,7 @@ geno(vcf)$GT[rownames(vcf) %in% names(trp53), ]
 
 ---
 
-## 📁 Output
+##  Output
 - `braf_tp53.variants.vcf`: contains variant calls
 - Visualizations: made in R using `ggplot2` or `GenomicRanges`
 
@@ -121,9 +121,4 @@ geno(vcf)$GT[rownames(vcf) %in% names(trp53), ]
 
 ---
 
-## 📌 To Do
-- Automate in Snakemake or shell script
-- Extend to full-exome or CNV analysis with `GATK4` and `AllelicCNV`
-
----
 © 2025 – Ready to upload to GitHub. Add README + sample data + optional RMarkdown notebook for visualization.
