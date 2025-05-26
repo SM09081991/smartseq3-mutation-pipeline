@@ -9,7 +9,7 @@ Reference genome: Ensembl GRCm38 (no chr prefix)
 
 Gene annotation: optional for visualization
 
-# Output
+**#Output**
 
 braf_tp53.variants.vcf: contains variant calls
 
